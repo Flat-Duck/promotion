@@ -4,10 +4,10 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-
-class Provider extends Model
+use App\Scopes\Searchable;
+class Decision extends Model
 {
-  //  use SoftDeletes;
+    // use SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -15,15 +15,8 @@ class Provider extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'phone', 'email', 'location', 'user_name', 'password','fbID'
+        'name','fbID'
     ];
-
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
-    protected $hidden = ['password'];
 
     /**
      * Validation rules
@@ -34,23 +27,16 @@ class Provider extends Model
     {
         return [
             'name' => 'required|string',
-            'phone' => 'required|string',
-            'email' => 'required|email',
-            'location' => 'required|string',
             'fbID' => 'nullable|string',
-            'user_name' => 'required|string',
-            'password' => 'string|confirmed',
-            'services' => 'array',
-            'services.*' => 'numeric|exists:services,id',
         ];
     }
 
     /**
-     * Get the services for the Provider.
+     * Get the providers for the Service.
      */
-    public function services()
+    public function providers()
     {
-        return $this->belongsToMany('App\Service');
+        return $this->belongsToMany('App\Provider');
     }
 
     /**
