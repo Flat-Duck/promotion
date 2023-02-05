@@ -1,40 +1,36 @@
-@extends('admin.layouts.app', ['page' => 'provider'])
+@extends('admin.layouts.app', ['page' => 'specialization'])
 
-@section('title', 'Providers')
+@section('title', 'التخصصات')
 
 @section('content')
 <div class="row">
     <div class="col-xs-12">
         <div class="box">
             <div class="box-header with-border">
-                <h3 class="box-title">Providers</h3>
+                <h3 class="box-title">التخصصات</h3>
 
-                <a class="pull-right btn btn-sm btn-primary" href="{{ route('admin.providers.create') }}">
-                    Add New
+                <a class="pull-right btn btn-sm btn-primary" href="{{ route('admin.specializations.create') }}">
+                    إضافة تخصص جديد
                 </a>
             </div>
             <div class="box-body">
                 <table class="table table-bordered">
                     <tr>
                         <th>#</th>
-                        <th>Name</th>
-                        <th>Phone</th>
-                        <th>User Name</th>
-                        <th>Action</th>
+                        <th>الاسم</th>
+                        <th>العمليات</th>
                     </tr>
 
-                    @forelse ($providers as $k=> $provider)
+                    @forelse ($specializations as $k=> $specialization)
                         <tr>
                             <td>{{ $k+1}}</td>
-                            <td>{{ $provider->name }}</td>
-                            <td>{{ $provider->phone }}</td>
-                            <td>{{ $provider->user_name }}</td>
+                            <td>{{ $specialization->name }}</td>
                             <td>
-                                <a href="{{ route('admin.providers.edit', ['provider' => $provider->id]) }}">
+                                <a href="{{ route('admin.specializations.edit', ['specialization' => $specialization->id]) }}">
                                     <i class="fa fa-pencil-square-o"></i>
                                 </a>
 
-                                <form action="{{ route('admin.providers.destroy', ['provider' => $provider->id]) }}"
+                                <form action="{{ route('admin.specializations.destroy', ['specialization' => $specialization->id]) }}"
                                     method="POST"
                                     class="inline pointer"
                                 >
@@ -49,14 +45,14 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5">لاتوجد سجلات</td>
+                            <td colspan="3">لاتوجد سجلات</td>
                         </tr>
                     @endforelse
                 </table>
             </div>
 
             <div class="box-footer clearfix">
-                {{ $providers->links('vendor.pagination.default') }}
+                {{ $specializations->links('vendor.pagination.default') }}
             </div>
         </div>
     </div>

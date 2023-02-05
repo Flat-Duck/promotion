@@ -1,40 +1,58 @@
-@extends('admin.layouts.app', ['page' => 'provider'])
+@extends('admin.layouts.app', ['page' => $page])
 
-@section('title', 'Providers')
+@section('title', 'أعضاء هيئة التدريس')
 
 @section('content')
 <div class="row">
     <div class="col-xs-12">
         <div class="box">
             <div class="box-header with-border">
-                <h3 class="box-title">Providers</h3>
+                <h3 class="box-title">أعضاء هيئة التدريس</h3>
 
-                <a class="pull-right btn btn-sm btn-primary" href="{{ route('admin.providers.create') }}">
-                    Add New
+                <a class="pull-right btn btn-sm btn-primary" href="{{ route('admin.members.create') }}">
+                    إضافة جديد
                 </a>
             </div>
             <div class="box-body">
                 <table class="table table-bordered">
                     <tr>
                         <th>#</th>
-                        <th>Name</th>
-                        <th>Phone</th>
-                        <th>User Name</th>
-                        <th>Action</th>
+                        <th>الاسم</th>
+                        <th>الدرجة الاكاديمية</th>
+                        <th>الدرجة</th>
+                        <th>رقم الهاتف</th>
+                        <th>تاريخ اخر ترقية</th>
+                        <th>تاريخ استحقاق الترقية القادم</th>
+                        <th>الصورة الشخصية</th>
+                        {{-- <th> البريد الالكتروني</th> --}}
+                        {{-- <th>الرقم الوطني</th> --}}
+                        <th>العمليات</th>
                     </tr>
 
-                    @forelse ($providers as $k=> $provider)
+                    @forelse ($members as $k=> $member)
                         <tr>
                             <td>{{ $k+1}}</td>
-                            <td>{{ $provider->name }}</td>
-                            <td>{{ $provider->phone }}</td>
-                            <td>{{ $provider->user_name }}</td>
+                            <td>{{ $member->name }}</td>
+                            <td>{{ $member->academic_degree }}</td>
+                            <td>{{ $member->degree }}</td>
+                            <td>{{ $member->phone }}</td>
+                            <td>{{ $member->last_pormotion_date }}</td>
+                            <td>{{ $member->next_pormotion_date }}</td>
                             <td>
-                                <a href="{{ route('admin.providers.edit', ['provider' => $provider->id]) }}">
+                                @php $src = $member->picture ? \Storage::url($member->picture) : '' @endphp
+                                @if($src)                                
+                                <img src="{{ $member->picture ? \Storage::url($member->picture) : '' }}" class="border rounded" style="width: 60px; height: 80px; object-fit: cover;">
+                                @else <div class="border border-info" style="width: 60px; height: 80px;"></div>
+                                @endif
+                            </td>
+                            {{-- <td>{{ $member->email }}</td> --}}
+                            {{-- <td>{{ $member->n_id }}</td>                             --}}
+                            <td>
+                                <a href="{{ route('admin.members.edit', ['member' => $member->id]) }}">
                                     <i class="fa fa-pencil-square-o"></i>
                                 </a>
 
-                                <form action="{{ route('admin.providers.destroy', ['provider' => $provider->id]) }}"
+                                <form action="{{ route('admin.members.destroy', ['member' => $member->id]) }}"
                                     method="POST"
                                     class="inline pointer"
                                 >
@@ -49,14 +67,14 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5">No records found</td>
+                            <td colspan="5">لاتوجد سجلات</td>
                         </tr>
                     @endforelse
                 </table>
             </div>
 
             <div class="box-footer clearfix">
-                {{ $providers->links('vendor.pagination.default') }}
+                {{ $members->links('vendor.pagination.default') }}
             </div>
         </div>
     </div>

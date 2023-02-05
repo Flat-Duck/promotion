@@ -5,7 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use App\Scopes\Searchable;
 
-class Department extends Model
+class Specialization extends Model
 {
     use Searchable;
 

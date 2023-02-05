@@ -45,7 +45,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="3">No records found</td>
+                            <td colspan="3">لاتوجد سجلات</td>
                         </tr>
                     @endforelse
                 </table>

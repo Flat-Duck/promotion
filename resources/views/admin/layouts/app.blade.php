@@ -23,7 +23,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 </head>
 
-<body class="hold-transition skin-blue sidebar-mini">
+<body dir="rtl" class="hold-transition skin-blue sidebar-mini">
     <div class="wrapper">
         {{-- Header --}}
         <header class="main-header">
@@ -98,19 +98,60 @@
                             <span>Dashboard</span>
                         </a>
                     </li>
-
-                    <li {{ $page == 'provider' ? ' class=active' : '' }}>
-                        <a href="{{ route('admin.providers.index') }}">
+                    <li {{ $page == 'admins' ? ' class=active' : '' }}>
+                        <a href="{{ route('admin.admins.index') }}">
                             <i class="fa fa-arrow-right"></i>
-                            <span>Providers</span>
+                            <span>المستخديمين</span>
                         </a>
                     </li>
-
-                    <li {{ $page == 'service' ? ' class=active' : '' }}>
-                        <a href="{{ route('admin.services.index') }}">
+                    <li {{ $page == 'department' ? ' class=active' : '' }}>
+                        <a href="{{ route('admin.departments.index') }}">
                             <i class="fa fa-arrow-right"></i>
-                            <span>Services</span>
+                            <span>الاقسام</span>
                         </a>
+                    </li>
+                    <li {{ $page == 'specialization' ? ' class=active' : '' }}>
+                        <a href="{{ route('admin.specializations.index') }}">
+                            <i class="fa fa-arrow-right"></i>
+                            <span>التخصصات</span>
+                        </a>
+                    </li>
+                    <li class="treeview {{(($page == 'member') || ($page =='this_month') || ($page =='this_year')) ? 'menu-open' : '' }}" style="height: auto;">
+                        <a href="#">
+                            <i class="fa  fa-cogs"></i> 
+                            <span>إدارة شؤون أعضاء هيئة التدريس</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu" style="display: {{(($page == 'member') || ($page =='this_month') || ($page =='this_year')) ? 'block' : 'none' }}">
+                            <li {{ $page == 'member' ? ' class=active' : '' }}>
+                                <a href="{{ route('admin.members.index') }}">
+                                    <i class="fa fa-building"></i>
+                                    <span>أعضاء هيئة التدريس</span>
+                                </a>
+                            </li>
+                            <li {{ $page == 'this_month' ? ' class=active' : '' }}>
+                                <a href="{{ route('admin.members.this_month') }}">
+                                    <i class="fa fa-arrow-right"></i>
+                                    <span>إستحقاق الترقية خلال هذا الشهر</span>
+                                </a>
+                            </li>
+
+                            <li {{ $page == 'this_year' ? ' class=active' : '' }}>
+                                <a href="{{ route('admin.members.this_year') }}">
+                                    <i class="fa fa-arrow-right"></i>
+                                    <span>إستحقاق الترقية خلال هذا العام</span>
+                                </a>
+                            </li>
+
+                            <li {{ $page == 'decision' ? ' class=active' : '' }}>
+                                <a href="{{ route('admin.admins.index') }}">
+                                    <i class="fa fa-arrow-right"></i>
+                                    <span>قرارات الترقية</span>
+                                </a>
+                            </li>
+                        </ul>
                     </li>
                 </ul>
             </section>

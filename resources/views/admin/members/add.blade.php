@@ -10,7 +10,7 @@
                 <h3 class="box-title">إضافة عضو هئية تدريس</h3>
             </div>
 
-            <form role="form" method="POST" action="{{ route('admin.members.store') }}">
+            <form role="form" method="POST" action="{{ route('admin.members.store') }}"  enctype="multipart/form-data">
                 @csrf
 
                 <div class="box-body">
@@ -38,6 +38,80 @@
                     </div>
 
                     <div class="form-group">
+                        <label for="employment_date">تاريخ التعيين</label>
+                        <input type="date"
+                            class="form-control"
+                            name="employment_date"
+                            required
+                            placeholder="تاريخ التعيين"
+                            value="{{ old('employment_date') }}"
+                            id="employment_date"
+                        >
+                    </div>
+                    <div class="form-group">
+                        <label for="departments">القسم</label>
+                        <select class="form-control" name="department_id" id="departments" >
+                            @foreach ($departments as $department)
+                                <option value="{{ $department->id }}"
+                                    {{ is_array(old('departments')) && in_array($department->id, old('departments')) ? 'selected' : '' }} >
+                                    {{ $department->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="specializations">التخصص العام</label>
+                        <select class="form-control" name="specialization_id" id="specializations" >
+                            @foreach ($specializations as $specialization)
+                                <option value="{{ $specialization->id }}"
+                                    {{ is_array(old('specializations')) && in_array($specialization->id, old('specializations')) ? 'selected' : '' }} >
+                                    {{ $specialization->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="academic_degree">الدرجة العلمية</label>
+                        <select class="form-control" name="academic_degree" id="academic_degree" >
+                            @foreach (App\Member::academic_degrees as $academic_degree)
+                                <option value="{{ $academic_degree }}"
+                                    {{ is_array(old('academic_degree')) && in_array(Member::academic_degrees, old('academic_degree')) ? 'selected' : '' }} >{{ $academic_degree }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="degree">الدرجة الاكاديمية</label>
+                        <select class="form-control" name="degree" id="degree" >
+                            @foreach (App\Member::degrees as $degree)
+                                <option value="{{ $degree }}"
+                                    {{ is_array(old('degree')) && in_array(Member::degrees, old('degree')) ? 'selected' : '' }} >{{ $degree }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="last_pormotion_date">تاريخ أخر ترقية</label>
+                        <input type="date"
+                            class="form-control"
+                            name="last_pormotion_date"
+                            required
+                            placeholder=">تاريخ أخر ترقية "
+                            value="{{ old('last_pormotion_date') }}"
+                            id="last_pormotion_date"
+                        >
+                    </div>
+                    <div class="form-group">
+                        <label for="next_pormotion_date">تاريخ إستحقاق الترقية القادمة </label>
+                        <input type="date"
+                            class="form-control"
+                            name="next_pormotion_date"
+                            required
+                            placeholder=">تاريخ أخر ترقية "
+                            value="{{ old('next_pormotion_date') }}"
+                            id="next_pormotion_date">
+                    </div>
+                    <div class="form-group">
                         <label for="phone">رقم الهاتف</label>
                         <input type="text"
                             class="form-control"
@@ -61,28 +135,16 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="degree">الدرجة الاكاديمية</label>
-                        <select class="form-control" name="degree" id="degree" >
-                            @foreach (App\Member::degrees as $degree)
-                                <option value="{{ $degree }}"
-                                    {{ is_array(old('degree')) && in_array(Member::degrees, old('degree')) ? 'selected' : '' }} >{{ $degree }}
-                                </option>
-                            @endforeach
-                        </select>
+                        <label for="notes">ملاحظات </label>
+                        <input type="TextArea"
+                            class="form-control"
+                            name="notes"
+                            required
+                            placeholder="ملاحظات "
+                            value="{{ old('notes') }}"
+                            id="notes"
+                        >
                     </div>
-
-                    <div class="form-group">
-                        <label for="departments">القسم</label>
-                        <select class="form-control" name="departments" id="departments" >
-                            @foreach ($departments as $department)
-                                <option value="{{ $department->id }}"
-                                    {{ is_array(old('departments')) && in_array($department->id, old('departments')) ? 'selected' : '' }} >
-                                    {{ $department->name }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-
                     <div class="form-group">
                         <label for="picture">الصورة الشخصية</label>
                         <input type="file"
@@ -105,7 +167,7 @@
                 <div class="box-footer">
                     <button type="submit" class="btn btn-primary">Submit</button>
 
-                    <a href="{{ route('admin.providers.index') }}" class="btn btn-default">
+                    <a href="{{ route('admin.members.index') }}" class="btn btn-default">
                         Cancel
                     </a>
                 </div>

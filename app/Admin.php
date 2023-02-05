@@ -6,11 +6,12 @@ use App\Notifications\AdminResetPassword;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Scopes\Searchable;
 
 
 class Admin extends Authenticatable
 {
-    use SoftDeletes, Notifiable;
+    use SoftDeletes, Notifiable,Searchable;
 
     /**
      * The attributes that should be mutated to dates.
@@ -73,5 +74,18 @@ class Admin extends Authenticatable
             'current_password' => 'required|string|min:8',
             'password' => 'required|string|min:8|confirmed',
         ];
+    }
+         /**
+     * Returns the paginated list of resources
+     *
+     * @return \Illuminate\Pagination\Paginator
+     **/
+    public static function getList($search = null)
+    {
+        return static::search($search)
+            ->latest()
+            ->paginate(10)
+            ->withQueryString();
+        
     }
 }

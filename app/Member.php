@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -15,14 +16,13 @@ class Member extends Model
      * @var array
      */
     protected $fillable = [
-        'name',
-        'phone',
-        'n_id',
-        'email',
-        'degree',
-        'department_id',
-        'picture',
-        'cv',
+        'name', 'n_id', 'employment_date',
+        'department_id', 'specialization_id',
+        'degree', 'academic_degree',
+        'last_pormotion_date', 
+        //'next_pormotion_date',
+        'notes', 'phone', 'email',
+        'picture'
     ];
     /**
      * The name of degrees
@@ -34,6 +34,34 @@ class Member extends Model
         'دكتوراة'
     ];
 
+    public function getMinimumYears($degree,$academic_degrees)
+    {
+        if($academic_degrees == 'أستاذ'){
+            return 0;
+        }
+        if($academic_degrees == 'أستاذ مساعد' && $degree == 'دكتوراة'){
+            return 3;
+
+        }elseif($academic_degrees == 'أستاذ مشارك' && $degree == 'ماجستير'){
+            return 6;
+        }else{
+            return 4;
+        }
+    }
+   
+    /**
+     * The name of degrees
+     *
+     * @var array
+     */
+    CONST academic_degrees = [
+        'أستاذ',
+        'أستاذ مساعد',
+        'أستاذ مشارك',
+        'محاضر ',
+        'محاضر مساعد '
+    ];
+
     /**
      * Validation rules
      *
@@ -42,14 +70,25 @@ class Member extends Model
     public static function validationRules()
     {
         return [
-            'name' => 'required|string',
-            'phone'=> 'nullable|string',
-            'email'=> 'nullable|string',
-            'n_id'=> 'nullable|string',
-            'degree'=> 'nullable|string',
-            'department_id'=> 'nullable|string',
-            'picture'=> 'file',
-            'cv'=> 'file',
+            // 'name' => 'required|string',
+            // 'phone'=> 'nullable|string',
+            // 'email'=> 'nullable|string',
+            // 'n_id'=> 'nullable|string',
+            // 'degree'=> 'nullable|string',
+            // 'department_id'=> 'nullable|string',
+            'name'=> 'required|string',
+            'n_id'=> 'required|string',
+            'employment_date'=> 'required|string',
+            'department_id'=> 'required|string',
+            'specialization_id'=> 'required|string',
+            'degree'=> 'required|string',
+            'academic_degree'=> 'required|string',
+            'last_pormotion_date'=> 'date',
+          //  'next_pormotion_date'=> 'date',
+            'notes'=> 'required|string',
+            'phone'=> 'required|string',
+            'email'=> 'required|string',
+            //'cv'=> 'file',
         ];
     }
 
@@ -69,5 +108,25 @@ class Member extends Model
     public static function getList()
     {
         return static::paginate(10);
+    }
+
+     /**
+     * Returns the paginated list of resources
+     *
+     * @return \Illuminate\Pagination\Paginator
+     **/
+    public function calculateNextPromotionDate()
+    {
+        $years = $this->getMinimumYears($this->degree,$this->academic_degree);
+        
+        if($years > 0){
+            $last_date = new Carbon($this->last_pormotion_date);
+            $next_date = $last_date->addYears($years);
+            $this->next_pormotion_date = $next_date;
+            $this->save();
+        }
+        
+        
+        
     }
 }
